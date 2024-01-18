@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.bit.mapper.MemberMapper">
+  
+    <select id="memberList" resultType="kr.bit.entity.Member">
+       select * from member
+    </select>
+    
+    <insert id="memberInsert" parameterType="kr.bit.entity.Member">
+        insert into member(userId, userPassword, userName, age, phoneNo, 
+        adressSi, adressGu, gender, incomeQuintile, accrRqisCn, major, employmentStatus, splzRlmRqisCn, email)
+        values(
+        #{userId},
+        #{userPassword},
+        #{userName},
+        #{age},
+        #{phoneNo},
+        #{adressSi},
+        #{adressGu},
+        #{gender},
+        #{incomeQuintile},
+        #{accrRqisCn},
+        #{major},
+        #{employmentStatus},
+        #{splzRlmRqisCn},
+        #{email}
+        )       
+        
+    </insert>
+    
+    
+    
+    <select id="login" resultType="kr.bit.entity.Member" parameterType="kr.bit.entity.Member">
+  		select * from member where userId=#{userId} and userPassword=#{userPassword}
+  	</select>
+  	
+  	<select id="idFind" resultType="String" parameterType="String">
+  		select userId from member where userName=#{userName} and phoneNo=#{phoneNo}
+  	</select>
+    
+    
+    <update id="memberUpdate" parameterType="kr.bit.entity.Member" >
+         update member 
+         set userName=#{userName}, age=#{age}, phoneNo=#{phoneNo}, 
+         adressSi=#{adressSi}, adressGu=#{adressGu}, gender=#{gender}, 
+         incomeQuintile=#{incomeQuintile}, accrRqisCn=#{accrRqisCn}, major=#{major}, 
+         employmentStatus=#{employmentStatus}, splzRlmRqisCn=#{splzRlmRqisCn}, email=#{email}  
+         where userId=#{userId}	 
+    </update>
+    
+    <select id="read" parameterType="String" resultType="kr.bit.entity.Member">
+  		select * from member where userId=#{userId}
+  	</select>
+  	
+  	<delete id="remove" parameterType="kr.bit.entity.Member">
+  		delete from member where userId=#{userId} and userPassword=#{userPassword}
+  	</delete>
+  	
+  	<select id="idCheck" resultType="String" parameterType="String">
+  		select IFNULL(userId, "null") from member where userId=#{userId}
+  	</select>
+    
+    <update id="updatePw" >
+		update member set userPassword=#{userPassword} where userId=#{userId}
+	</update>
+	
+	<select id ="selectMember" parameterType="String" resultType="kr.bit.entity.Member">
+		select * from member where email=#{email}
+	</select>
+	
+	<!-- 패스워드변경 -->
+	<update id = "pwUpdate_M" parameterType="kr.bit.entity.Member">
+	update member set userPassword=#{userPassword} where email= #{email}
+	</update>
+    
+</mapper>

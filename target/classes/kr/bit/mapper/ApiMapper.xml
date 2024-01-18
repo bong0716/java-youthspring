@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.bit.mapper.ApiMapper">
+  
+    <select id="getList" resultType="kr.bit.entity.ApiDataDto" parameterType="String">
+        select * from wishList where userId=#{userId}
+    </select>
+    
+    <insert id="dataInsert" parameterType="kr.bit.entity.ApiDataDto">
+    
+		insert into wishList(bizId, userId, polyItcnCn, polyBizSjnm, rqutPrdCn,
+		rqutUrla, cnsgNmor, ageInfo, sporCn, rqutProcCn, jdgnPresCn, empmSttsCn,
+		accrRqisCn, majrRqisCn, splzRlmRqisCn)  
+        values(
+        #{bizId},
+        #{userId},
+        #{polyItcnCn},
+        #{polyBizSjnm},
+        #{rqutPrdCn},
+        #{rqutUrla},
+        #{cnsgNmor},
+        #{ageInfo},
+        #{sporCn},
+        #{rqutProcCn},
+        #{jdgnPresCn},
+        #{empmSttsCn},
+        #{accrRqisCn},
+        #{majrRqisCn},
+        #{splzRlmRqisCn}
+        )       
+        
+    </insert>
+    
+    <delete id="dataDelete" parameterType="String">
+    	delete from wishList where userId=#{userId} and bizId=#{bizId} 
+    </delete>
+    
+     <select id="getHotList" resultType="kr.bit.entity.ApiDataDto">
+		SELECT w.*
+			FROM wishList w
+			JOIN (
+			    SELECT polyBizSjnm, COUNT(*) AS count
+			    FROM wishList
+			    GROUP BY polyBizSjnm
+			    ORDER BY count DESC
+			    LIMIT 4
+			) t ON w.polyBizSjnm = t.polyBizSjnm
+			LIMIT 4;
+    </select>
+    
+</mapper>
